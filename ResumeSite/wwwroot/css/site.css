@@ -18,5 +18,19 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-image: url('../lib/background.jpg');
+}
+
+#cat{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 25px;
+    height: 25px;
+}
+
+/*Asign class to parts of scrolling page to keep it maximized based on screen size*/
+.content-block{
+
 }
