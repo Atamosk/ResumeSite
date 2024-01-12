@@ -34,3 +34,21 @@ body {
 .content-block{
 
 }
+
+/*
+@media screen and (min-width:990px){
+    .navbar .container-fluid, .navbar-expand-sm .navbar-collapse, .navbar-expand-sm .navbar-nav {
+        flex-direction: column;
+    }
+}
+
+.navbar{
+    width:10%;
+    height: 100vh;
+    align-items: flex-start;
+    background-color:aquamarine;
+}*/
+
+.navbar-brand{
+    position:absolute;   
+}

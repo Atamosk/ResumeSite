@@ -41,7 +41,7 @@ namespace ResumeSite.Controllers
 
         public ActionResult DisplayImage(string imageName)
         {
-            string filePath = "~/lib/" + imageName;
+            string filePath = "~/lib/Images/" + imageName;
             return File(filePath, "image/png");
         }
     }
