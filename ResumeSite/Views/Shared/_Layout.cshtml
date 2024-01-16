@@ -12,7 +12,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 " style="background-color:aquamarine">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow" style="background-color:aquamarine">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WK</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -40,18 +40,24 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
-        <nav class="navbar navbar-dark" style="background-color:lightgray;height:10%;">
-            I'm just testing something here.
-        </nav>
+        <div class="d-flex justify-content-center">
+            <div>
+                This site was stood up with an Azure domain. The front and back programed by myself. Feel free to check out the Git repo <a class="d-inline" href="https://github.com/Atamosk/ResumeSite">here.</a> Free code reviews are warmly accepted.
+            </div>
+        </div>
     </footer>
-    <img id="cat" src="~/lib/vibing.gif" />
+    <div class="catHidden"></div>
+        <div class="cat">
+            <img src="@Url.Action("DisplayImage", "Home", new {imageName = "vibing.gif"})" height="25" width="25" />
+        </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
