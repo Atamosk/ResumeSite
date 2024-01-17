@@ -71,9 +71,8 @@ body {
 }
 
 .experienceBlock{
+    background-image: url(../lib/Images/linepaper.jpg);
     width:80%;
-    justify-content:center;
-    background-color:lightgray;
     border:solid;
     border-radius:25px;
     padding:25px;

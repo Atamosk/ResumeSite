@@ -2,11 +2,15 @@
     ViewData["Title"] = "Greeting";
 }
 
-<div>
-    <img class="float-start" style="border: 8px inset #b1e4d0;" src="@Url.Action("DisplayImage", "Home", new {imageName = "MeSitting.png"})" height="400" width="200" />
-    <div>
-        <h1 class="display-4">Hi! Thanks for stopping by :)</h1>
-        <h2 class="text-center">Please excuse the goofyness as I get myself in shape.</h2>
-        <div>Here's my <a target="_blank" href="https://www.linkedin.com/in/william-kenney-564a5990">linkedin</a> as a consulation.</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <img style="border: 8px inset #b1e4d0;" src="@Url.Action("DisplayImage", "Home", new {imageName = "MeSitting.png"})" height="400" width="200" />
+        </div>
+        <div class="col-9 text-center">
+            <h1>Hi! Thanks for stopping by :)</h1>
+            <h2>Please excuse the goofyness as I get myself in shape.</h2>
+            <div>Here's my <a target="_blank" href="https://www.linkedin.com/in/william-kenney-564a5990">linkedin</a> as a consulation.</div>
+        </div>
     </div>
 </div>
