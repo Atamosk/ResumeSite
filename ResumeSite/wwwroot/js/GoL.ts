@@ -11,18 +11,21 @@
     private clickDrag: boolean;
     private clearBtn: HTMLButtonElement;
     private playBtn: HTMLButtonElement;
+    private pauseBtn: HTMLButtonElement;
 
     constructor(height: number, width: number) {
         let canvas = document.getElementById('canvas') as HTMLCanvasElement;
         let context = canvas.getContext("2d");
         let clearBtn = document.getElementById('clearBtn') as HTMLButtonElement;
         let playBtn = document.getElementById('playBtn') as HTMLButtonElement;
+        let pauseBtn = document.getElementById('pauseBtn') as HTMLButtonElement;
         this.currentGen = [];
         this.nextGen = [];
         this.canvas = canvas;
         this.context = context;
         this.clearBtn = clearBtn;
         this.playBtn = playBtn;
+        this.pauseBtn = pauseBtn;
         this.width = width;
         this.height = height;
         this.running = false;
@@ -40,21 +43,18 @@
         }
         this.initUserInput();
         this.drawAllTrue();
-    }
-    public lifeHappens = (e: Event) => {
-        this.running = true;
-        //this.currentGen[1][1] = true;
-        var obj = this;
-        setInterval(function () {
-            obj.deriveNextGen();
-            obj.drawAllTrue();
-            console.log("Wait")
+
+        //Here is the main loop setup to iterate ever half second to be able to allow the user to see the logic.
+        setInterval(() => {
+            if (this.running == true) {
+                this.deriveNextGen();
+                this.drawAllTrue();
+            }
         }, 500);
-        //this.running = false;
     }
 
+    //Here we check each cell's neighbors to determain if it lives, dies, or is born.
     public deriveNextGen() {
-        let currentCell = false;
         let neighbors = 0;
         for (let x = 1; x <= this.width; x++) {
             for (let y = 1; y <= this.height; y++) {
@@ -102,7 +102,7 @@
         this.drawAllTrue();
     }
 
-
+    //Checks the 2D array for any cells with a "true" value and draws a square at a position derived from the X and Y value of the index of that cell
     drawAllTrue() {
         for (let x = 1; x <= this.width; x++) {
             for (let y = 1; y <= this.height; y++) {
@@ -120,6 +120,7 @@
         let canvas = this.canvas;
         let clearBtn = this.clearBtn;
         let playBtn = this.playBtn;
+        let pauseBtn = this.pauseBtn;
 
         canvas.addEventListener("mousedown", this.pressEvent);
 
@@ -127,7 +128,9 @@
         
         clearBtn.addEventListener("click", this.clearGrid);
 
-        playBtn.addEventListener("click", this.lifeHappens);
+        playBtn.addEventListener("click", () => { this.running = true });
+
+        pauseBtn.addEventListener("click", () => {this.running = false})
     }
 
     pressEvent = (e: MouseEvent | TouchEvent) => {
@@ -138,6 +141,7 @@
             (e as TouchEvent).changedTouches[0].clientY :
             (e as MouseEvent).pageY;
 
+        //This uses the X and Y location values of the mousedown and touchstart event, and converts them to a reletive index in the array.
         let arrX = Math.floor(((eventX - (this.canvas.offsetLeft) - 2) + 11) / 11);
         let arrY = Math.floor(((eventY - (this.canvas.offsetTop) - 2)  + 11) / 11);
         if (this.currentGen[arrX][arrY] == true) {
@@ -147,12 +151,13 @@
             this.currentGen[arrX][arrY] = true;
         }
         this.drawAllTrue();
-
     }
+
     clearGrid = (e: Event) => {
         for (let x = 0; x < this.width + 2; x++) {
             for (let y = 0; y < this.height + 2; y++) {
                 this.currentGen[x][y] = false;
+                this.nextGen[x][y] = false;
             }
         }
         this.drawAllTrue();

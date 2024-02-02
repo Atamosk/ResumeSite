@@ -1,17 +1,6 @@
 var GameOfLife = /** @class */ (function () {
     function GameOfLife(height, width) {
         var _this = this;
-        this.lifeHappens = function (e) {
-            _this.running = true;
-            //this.currentGen[1][1] = true;
-            var obj = _this;
-            setInterval(function () {
-                obj.deriveNextGen();
-                obj.drawAllTrue();
-                console.log("Wait");
-            }, 500);
-            //this.running = false;
-        };
         this.pressEvent = function (e) {
             var eventX = e.changedTouches ?
                 e.changedTouches[0].pageX :
@@ -19,6 +8,7 @@ var GameOfLife = /** @class */ (function () {
             var eventY = e.changedTouches ?
                 e.changedTouches[0].clientY :
                 e.pageY;
+            //This uses the X and Y location values of the mousedown and touchstart event, and converts them to a reletive index in the array.
             var arrX = Math.floor(((eventX - (_this.canvas.offsetLeft) - 2) + 11) / 11);
             var arrY = Math.floor(((eventY - (_this.canvas.offsetTop) - 2) + 11) / 11);
             if (_this.currentGen[arrX][arrY] == true) {
@@ -33,6 +23,7 @@ var GameOfLife = /** @class */ (function () {
             for (var x = 0; x < _this.width + 2; x++) {
                 for (var y = 0; y < _this.height + 2; y++) {
                     _this.currentGen[x][y] = false;
+                    _this.nextGen[x][y] = false;
                 }
             }
             _this.drawAllTrue();
@@ -41,12 +32,14 @@ var GameOfLife = /** @class */ (function () {
         var context = canvas.getContext("2d");
         var clearBtn = document.getElementById('clearBtn');
         var playBtn = document.getElementById('playBtn');
+        var pauseBtn = document.getElementById('pauseBtn');
         this.currentGen = [];
         this.nextGen = [];
         this.canvas = canvas;
         this.context = context;
         this.clearBtn = clearBtn;
         this.playBtn = playBtn;
+        this.pauseBtn = pauseBtn;
         this.width = width;
         this.height = height;
         this.running = false;
@@ -64,9 +57,16 @@ var GameOfLife = /** @class */ (function () {
         }
         this.initUserInput();
         this.drawAllTrue();
+        //Here is the main loop setup to iterate ever half second to be able to allow the user to see the logic.
+        setInterval(function () {
+            if (_this.running == true) {
+                _this.deriveNextGen();
+                _this.drawAllTrue();
+            }
+        }, 500);
     }
+    //Here we check each cell's neighbors to determain if it lives, dies, or is born.
     GameOfLife.prototype.deriveNextGen = function () {
-        var currentCell = false;
         var neighbors = 0;
         for (var x = 1; x <= this.width; x++) {
             for (var y = 1; y <= this.height; y++) {
@@ -113,6 +113,7 @@ var GameOfLife = /** @class */ (function () {
         }
         this.drawAllTrue();
     };
+    //Checks the 2D array for any cells with a "true" value and draws a square at a position derived from the X and Y value of the index of that cell
     GameOfLife.prototype.drawAllTrue = function () {
         for (var x = 1; x <= this.width; x++) {
             for (var y = 1; y <= this.height; y++) {
@@ -126,13 +127,16 @@ var GameOfLife = /** @class */ (function () {
         }
     };
     GameOfLife.prototype.initUserInput = function () {
+        var _this = this;
         var canvas = this.canvas;
         var clearBtn = this.clearBtn;
         var playBtn = this.playBtn;
+        var pauseBtn = this.pauseBtn;
         canvas.addEventListener("mousedown", this.pressEvent);
         canvas.addEventListener("touchstart", this.pressEvent);
         clearBtn.addEventListener("click", this.clearGrid);
-        playBtn.addEventListener("click", this.lifeHappens);
+        playBtn.addEventListener("click", function () { _this.running = true; });
+        pauseBtn.addEventListener("click", function () { _this.running = false; });
     };
     return GameOfLife;
 }());
