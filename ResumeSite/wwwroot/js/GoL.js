@@ -3,11 +3,14 @@ var GameOfLife = /** @class */ (function () {
         var _this = this;
         this.lifeHappens = function (e) {
             _this.running = true;
-            for (var j = 0; j < 1; j++) {
-                _this.deriveNextGen();
-                _this.drawAllTrue();
-            }
-            _this.running = false;
+            //this.currentGen[1][1] = true;
+            var obj = _this;
+            setInterval(function () {
+                obj.deriveNextGen();
+                obj.drawAllTrue();
+                console.log("Wait");
+            }, 500);
+            //this.running = false;
         };
         this.pressEvent = function (e) {
             var eventX = e.changedTouches ?
@@ -28,7 +31,6 @@ var GameOfLife = /** @class */ (function () {
         };
         this.clearGrid = function (e) {
             for (var x = 0; x < _this.width + 2; x++) {
-                _this.currentGen[x] = [];
                 for (var y = 0; y < _this.height + 2; y++) {
                     _this.currentGen[x][y] = false;
                 }
@@ -67,7 +69,6 @@ var GameOfLife = /** @class */ (function () {
         var currentCell = false;
         var neighbors = 0;
         for (var x = 1; x <= this.width; x++) {
-            this.currentGen[x] = [];
             for (var y = 1; y <= this.height; y++) {
                 if (this.currentGen[x - 1][y - 1]) {
                     neighbors++;
@@ -99,11 +100,13 @@ var GameOfLife = /** @class */ (function () {
                 else if (this.currentGen[x][y] == true && (neighbors < 2 || neighbors > 3)) {
                     this.nextGen[x][y] = false;
                 }
+                else if (this.currentGen[x][y] == true && (neighbors > 1 && neighbors < 4)) {
+                    this.nextGen[x][y] = true;
+                }
                 neighbors = 0;
             }
         }
         for (var x = 0; x < this.width + 2; x++) {
-            this.currentGen[x] = [];
             for (var y = 0; y < this.height + 2; y++) {
                 this.currentGen[x][y] = this.nextGen[x][y];
             }

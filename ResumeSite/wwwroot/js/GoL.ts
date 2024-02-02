@@ -41,20 +41,22 @@
         this.initUserInput();
         this.drawAllTrue();
     }
-    private lifeHappens = (e: Event) => {
+    public lifeHappens = (e: Event) => {
         this.running = true;
-        for (let j = 0; j < 1; j++) {
-            this.deriveNextGen();
-            this.drawAllTrue();
-        }
-        this.running = false;
+        //this.currentGen[1][1] = true;
+        var obj = this;
+        setInterval(function () {
+            obj.deriveNextGen();
+            obj.drawAllTrue();
+            console.log("Wait")
+        }, 500);
+        //this.running = false;
     }
 
-    private deriveNextGen() {
+    public deriveNextGen() {
         let currentCell = false;
         let neighbors = 0;
         for (let x = 1; x <= this.width; x++) {
-            this.currentGen[x] = [];
             for (let y = 1; y <= this.height; y++) {
                 if (this.currentGen[x - 1][y - 1]) {
                     neighbors++;
@@ -86,11 +88,13 @@
                 else if (this.currentGen[x][y] == true && (neighbors < 2 || neighbors > 3)) {
                     this.nextGen[x][y] = false;
                 }
+                else if (this.currentGen[x][y] == true && (neighbors > 1 && neighbors < 4)) {
+                    this.nextGen[x][y] = true;
+                }
                 neighbors = 0;
             }
         }
         for (let x = 0; x < this.width + 2; x++) {
-            this.currentGen[x] = [];
             for (let y = 0; y < this.height + 2; y++) {
                 this.currentGen[x][y] = this.nextGen[x][y];
             }
@@ -99,7 +103,7 @@
     }
 
 
-    private drawAllTrue() {
+    drawAllTrue() {
         for (let x = 1; x <= this.width; x++) {
             for (let y = 1; y <= this.height; y++) {
                 if (this.currentGen[x][y] == true) {
@@ -112,7 +116,7 @@
         }
     }
 
-    private initUserInput() {
+    initUserInput() {
         let canvas = this.canvas;
         let clearBtn = this.clearBtn;
         let playBtn = this.playBtn;
@@ -126,7 +130,7 @@
         playBtn.addEventListener("click", this.lifeHappens);
     }
 
-    private pressEvent = (e: MouseEvent | TouchEvent) => {
+    pressEvent = (e: MouseEvent | TouchEvent) => {
         let eventX = (e as TouchEvent).changedTouches ?
             (e as TouchEvent).changedTouches[0].pageX :
             (e as MouseEvent).pageX;
@@ -145,9 +149,8 @@
         this.drawAllTrue();
 
     }
-    private clearGrid = (e: Event) => {
+    clearGrid = (e: Event) => {
         for (let x = 0; x < this.width + 2; x++) {
-            this.currentGen[x] = [];
             for (let y = 0; y < this.height + 2; y++) {
                 this.currentGen[x][y] = false;
             }
