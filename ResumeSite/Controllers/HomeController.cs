@@ -18,17 +18,12 @@ namespace ResumeSite.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         public IActionResult About()
         {
             return View();
         }
 
-        public IActionResult Greeting()
+        public IActionResult GoLPage()
         {
             return View();
         }
