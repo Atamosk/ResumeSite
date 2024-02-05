@@ -44,13 +44,19 @@
         this.initUserInput();
         this.drawAllTrue();
 
-        //Here is the main loop setup to iterate ever half second to be able to allow the user to see the logic.
+        //Here is the main loop setup to iterate every quarter second to be able to allow the user to see the logic.
         setInterval(() => {
             if (this.running == true) {
                 this.deriveNextGen();
                 this.drawAllTrue();
+                this.playBtn.style.color = "red";
+                this.playBtn.style.backgroundColor = "lightred";
             }
-        }, 500);
+            else if (this.running == false) {
+                this.playBtn.style.color = "black";
+                this.playBtn.style.backgroundColor = "lightgrey";
+            }
+        }, 250);
     }
 
     //Here we check each cell's neighbors to determain if it lives, dies, or is born.
@@ -99,7 +105,7 @@
                 this.currentGen[x][y] = this.nextGen[x][y];
             }
         }
-        this.drawAllTrue();
+        //this.drawAllTrue();
     }
 
     //Checks the 2D array for any cells with a "true" value and draws a square at a position derived from the X and Y value of the index of that cell
@@ -107,13 +113,30 @@
         for (let x = 1; x <= this.width; x++) {
             for (let y = 1; y <= this.height; y++) {
                 if (this.currentGen[x][y] == true) {
-                    this.context.fillRect((x * 10 + x + 1) -11, (y * 10 + y + 1) - 11, 10, 10);
+                    this.context.fillRect((x * 10 + x + 0) -11, (y * 10 + y + 0) - 11, 10, 10);
                 }
                 else if (this.currentGen[x][y] == false) {
-                    this.context.clearRect((x * 10 + x + 1) - 11, (y * 10 + y + 1) - 11, 10, 10);
+                    this.context.clearRect((x * 10 + x + 0) - 11, (y * 10 + y + 0) - 11, 10, 10);
                 }
             }
         }
+        if (this.running == false) {
+            this.context.strokeStyle = "brown";
+        }
+        else if (this.running == true) {
+            this.context.strokeStyle = "wheat";
+        }
+        this.context.beginPath();
+        for (let i = 1; i < this.width; i++) {
+            this.context.moveTo(0 - 0.5, ((i * 11) + 0 - 0.5));
+            this.context.lineTo((11 * this.width) + 2 - 0.5, ((i * 11) + 0) - 0.5);
+        }
+        for (let j = 1; j < this.height; j++) {
+            this.context.moveTo(((j * 11) + 0) - 0.5, 0 - 0.5);
+            this.context.lineTo(((j * 11) + 0) - 0.5, (11 * this.height) + 2 - 0.5);
+        }
+        this.context.stroke();
+        this.context.fillStyle = "black";
     }
 
     initUserInput() {
@@ -130,7 +153,7 @@
 
         playBtn.addEventListener("click", () => { this.running = true });
 
-        pauseBtn.addEventListener("click", () => {this.running = false})
+        pauseBtn.addEventListener("click", () => { this.running = false });
     }
 
     pressEvent = (e: MouseEvent | TouchEvent) => {
@@ -160,6 +183,7 @@
                 this.nextGen[x][y] = false;
             }
         }
+        this.running = false;
         this.drawAllTrue();
     }
 }

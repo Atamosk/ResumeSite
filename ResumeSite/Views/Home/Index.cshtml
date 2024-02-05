@@ -2,12 +2,18 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container" style="background-color:aliceblue">
-    <div class="row text-center">
-        <h1 class="display-4">Hi! My name is William Kenney.</h1>
-        <h2 class="text-center">I'm an IT professional with 5 years experience.</h2>
-    <div>Here's my <a target="_blank" href="https://www.linkedin.com/in/william-kenney-564a5990">linkedin</a> as a consolation.</div>
-    </div>
-    <div class="row text-center justify-content-center">
+<div class="container welcome">
+    <div class="row">
+        <div class="col-3">
+            <img class="img-fluid meIndex" src="@Url.Action("DisplayImage", "Home", new{imageName = "myself.png"})" />
+        </div>
+        <div class="col">
+            <h1 class="text-center">Hi! My name is William Kenney.</h1>
+            <br />
+            <h2 class="text-center">I'm an IT professional with 5 years experience.</h2>
+            <br />
+            <div class="text-center">Thanks for stopping by. I put this site together mostly to learn and attach to job applications.
+                I am currently looking for work so feel free to reach out using the contact dropdown above.</div>
+        </div>
     </div>
 </div>
