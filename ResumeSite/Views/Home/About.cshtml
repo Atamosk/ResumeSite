@@ -1,8 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Resume";
 }
-<div class="container-fluid">
-    <div class="row">
-        <iframe height="100%" width="100%" style="overflow:hidden;height:100%;width:100%" frameborder="0" src="http://docs.google.com/viewer?url=[https://drive.google.com/file/d/1lC-OP7uAsZKq9SV1Oo6fVcmbPCkgDhG6/view?usp=sharing]&embedded=true"></iframe>
+    <div class="text-center">
+        <object 
+            type="application/pdf"
+            data="~/lib/files/Resume 2023.pdf"
+            height="1000px"
+                style="
+        width : 50%;
+        height: 1000;
+        overflow : hidden;">
+        </object>
+        <!--
+        <iframe frameborder="0"
+                src="~/lib/files/resume 2023.pdf" height="100%" width="100%">
+        </iframe>
+        -->
     </div>
-</div>
