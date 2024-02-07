@@ -2,18 +2,26 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container welcome">
+<div class="container welcomePage">
     <div class="row">
         <div class="col-3">
             <img class="img-fluid meIndex" src="@Url.Action("DisplayImage", "Home", new{imageName = "myself.png"})" />
         </div>
         <div class="col">
             <div class="container">
-                <h1 class="text-center">William Kenney.</h1>
+                <h1 class="text-center">William Kenney</h1>
                 <h5 class="text-center text-muted">I'm an IT professional and budding programmer.</h5>
                 <hr />
-                <p class="text-center">Thanks for stopping by. I put this site together mostly to learn and attach to job applications.
-                    I am currently looking for work so feel free to reach out using the contact dropdown above.
+                <p class="text-center">Thanks for stopping by. I put this site together mostly to learn and to attach to job applications. I have 5 years
+                    experience working as a support technician and am always looking to learn more. I studied computer science at Clarion University
+                    after a few years off from high school and enjoyed my time there.<br />
+                    I consider this site a kind of playground for myself, and anticipate adding and changing things as I learn.
+                    I don't have much of an eye for design yet so I'm sure I'll end up iterating on that more than anything.
+                    Feel free to come back once and a while to check out what I come up with. 
+                    There's some contact info above if you have any suggestions.<br />
+                    -Billy
+                    <hr />
+                    <h5 class="text-center text-muted">I am currently looking for work so feel free to reach out using the contact dropdown above.</h5>
                 </p>
             </div>
         </div>

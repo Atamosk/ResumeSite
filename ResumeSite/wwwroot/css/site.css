@@ -31,11 +31,15 @@ footer {
     background-color: mediumaquamarine;
 }
 
-.welcome {
+.welcomePage {
     border-width: 0px;
     border-radius: 0px 0px 50px 50px;
     background-color: #ececec;
     padding: 0px;
+}
+
+.golPage {
+    background-color: #ececec;
 }
 
 .cat {
@@ -67,20 +71,6 @@ footer {
 .content-block{
 
 }
-
-/*
-@media screen and (min-width:990px){
-    .navbar .container-fluid, .navbar-expand-sm .navbar-collapse, .navbar-expand-sm .navbar-nav {
-        flex-direction: column;
-    }
-}
-
-.navbar{
-    width:10%;
-    height: 100vh;
-    align-items: flex-start;
-    background-color:aquamarine;
-}*/
 
 .navbar-brand{
     position:absolute;   
