@@ -43,18 +43,15 @@
         }
         this.initUserInput();
         this.drawAllTrue();
+        this.drawGridLines();
 
         //Here is the main loop setup to iterate every quarter second to be able to allow the user to see the logic.
         setInterval(() => {
             if (this.running == true) {
                 this.deriveNextGen();
                 this.drawAllTrue();
-                this.playBtn.style.color = "red";
-                this.playBtn.style.backgroundColor = "lightred";
             }
             else if (this.running == false) {
-                this.playBtn.style.color = "black";
-                this.playBtn.style.backgroundColor = "lightgrey";
             }
         }, 250);
     }
@@ -105,7 +102,6 @@
                 this.currentGen[x][y] = this.nextGen[x][y];
             }
         }
-        //this.drawAllTrue();
     }
 
     //Checks the 2D array for any cells with a "true" value and draws a square at a position derived from the X and Y value of the index of that cell
@@ -120,6 +116,9 @@
                 }
             }
         }
+    }
+
+    drawGridLines() {
         if (this.running == false) {
             this.context.strokeStyle = "brown";
         }
@@ -151,9 +150,9 @@
         
         clearBtn.addEventListener("click", this.clearGrid);
 
-        playBtn.addEventListener("click", () => { this.running = true });
+        playBtn.addEventListener("click", this.pressPlay);
 
-        pauseBtn.addEventListener("click", () => { this.running = false });
+        pauseBtn.addEventListener("click", this.pressPause);
     }
 
     pressEvent = (e: MouseEvent | TouchEvent) => {
@@ -185,6 +184,20 @@
         }
         this.running = false;
         this.drawAllTrue();
+        this.drawGridLines();
+    }
+
+    pressPlay = (e: Event) => {
+        this.running = true;
+        this.playBtn.style.backgroundColor = "red";
+        this.drawGridLines();
+        this.playBtn.value = "<span class='bi-pause-fill'></span>";
+    }
+
+    pressPause = (e: Event) => {
+        this.running = false;
+        this.playBtn.style.backgroundColor = "default";
+        this.drawGridLines();
     }
 }
 

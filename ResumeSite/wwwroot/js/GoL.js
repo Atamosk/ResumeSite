@@ -28,6 +28,18 @@ var GameOfLife = /** @class */ (function () {
             }
             _this.running = false;
             _this.drawAllTrue();
+            _this.drawGridLines();
+        };
+        this.pressPlay = function (e) {
+            _this.running = true;
+            _this.playBtn.style.backgroundColor = "red";
+            _this.drawGridLines();
+            _this.playBtn.value = "<span class='bi-pause-fill'></span>";
+        };
+        this.pressPause = function (e) {
+            _this.running = false;
+            _this.playBtn.style.backgroundColor = "default";
+            _this.drawGridLines();
         };
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext("2d");
@@ -58,17 +70,14 @@ var GameOfLife = /** @class */ (function () {
         }
         this.initUserInput();
         this.drawAllTrue();
+        this.drawGridLines();
         //Here is the main loop setup to iterate every quarter second to be able to allow the user to see the logic.
         setInterval(function () {
             if (_this.running == true) {
                 _this.deriveNextGen();
                 _this.drawAllTrue();
-                _this.playBtn.style.color = "red";
-                _this.playBtn.style.backgroundColor = "lightred";
             }
             else if (_this.running == false) {
-                _this.playBtn.style.color = "black";
-                _this.playBtn.style.backgroundColor = "lightgrey";
             }
         }, 250);
     }
@@ -118,7 +127,6 @@ var GameOfLife = /** @class */ (function () {
                 this.currentGen[x][y] = this.nextGen[x][y];
             }
         }
-        //this.drawAllTrue();
     };
     //Checks the 2D array for any cells with a "true" value and draws a square at a position derived from the X and Y value of the index of that cell
     GameOfLife.prototype.drawAllTrue = function () {
@@ -132,6 +140,8 @@ var GameOfLife = /** @class */ (function () {
                 }
             }
         }
+    };
+    GameOfLife.prototype.drawGridLines = function () {
         if (this.running == false) {
             this.context.strokeStyle = "brown";
         }
@@ -151,7 +161,6 @@ var GameOfLife = /** @class */ (function () {
         this.context.fillStyle = "black";
     };
     GameOfLife.prototype.initUserInput = function () {
-        var _this = this;
         var canvas = this.canvas;
         var clearBtn = this.clearBtn;
         var playBtn = this.playBtn;
@@ -159,8 +168,8 @@ var GameOfLife = /** @class */ (function () {
         canvas.addEventListener("mousedown", this.pressEvent);
         canvas.addEventListener("touchstart", this.pressEvent);
         clearBtn.addEventListener("click", this.clearGrid);
-        playBtn.addEventListener("click", function () { _this.running = true; });
-        pauseBtn.addEventListener("click", function () { _this.running = false; });
+        playBtn.addEventListener("click", this.pressPlay);
+        pauseBtn.addEventListener("click", this.pressPause);
     };
     return GameOfLife;
 }());

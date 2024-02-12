@@ -4,9 +4,31 @@
 <div class="container golPage">
     <div class="row text-center">
         <h1 class="display-4">Conway's Game of Life</h1>
-        <h2 class="text-center">Click in the area below to activate cells. Then press the play button to watch it run.</h2>
     </div>
-    <div class="row text-center justify-content-center">
-        <partial name="/Views/Home/_GoL.cshtml" />
+    <div class="row">
+        <div class="col">
+            <div class="pt-5">
+                <h4 class="h4 text-center">How the game of life works</h4>
+                Click on cells to turn them on. Cells live or die based on these rules.
+                <hr />
+                <ul>
+                    <li>
+                        Dead cells with 3 neighbors will turn on
+                    </li>
+                    <li>
+                        Live cells with 2 or 3 neighbors stay alive
+                    </li>
+                    <li>
+                        Live cells with less than 2 or more than 3 neighbors die
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center col">
+            <partial name="/Views/Home/_GoL.cshtml" />
+        </div>
+        <div class="col">
+
+        </div>
     </div>
 </div>
