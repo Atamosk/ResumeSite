@@ -4,6 +4,7 @@
     private running: boolean;
     private currentGen;
     private nextGen;
+    private savedGen;
     private width: number;
     private height: number;
     private clickX: number;
@@ -12,6 +13,7 @@
     private clearBtn: HTMLButtonElement;
     private playBtn: HTMLButtonElement;
     private pauseBtn: HTMLButtonElement;
+    private replayBtn: HTMLButtonElement;
 
     constructor(height: number, width: number) {
         let canvas = document.getElementById('canvas') as HTMLCanvasElement;
@@ -19,13 +21,16 @@
         let clearBtn = document.getElementById('clearBtn') as HTMLButtonElement;
         let playBtn = document.getElementById('playBtn') as HTMLButtonElement;
         let pauseBtn = document.getElementById('pauseBtn') as HTMLButtonElement;
+        let replayBtn = document.getElementById('replayBtn') as HTMLButtonElement;
         this.currentGen = [];
         this.nextGen = [];
+        this.savedGen = [];
         this.canvas = canvas;
         this.context = context;
         this.clearBtn = clearBtn;
         this.playBtn = playBtn;
         this.pauseBtn = pauseBtn;
+        this.replayBtn = replayBtn;
         this.width = width;
         this.height = height;
         this.running = false;
@@ -39,6 +44,12 @@
             this.currentGen[x] = [];
             for (let y = 0; y < this.height +2; y++) {
                 this.currentGen[x][y] = false;
+            }
+        }
+        for (let x = 0; x < this.width + 2; x++) {
+            this.savedGen[x] = [];
+            for (let y = 0; y < this.height + 2; y++) {
+                this.savedGen[x][y] = false;
             }
         }
         this.initUserInput();
@@ -143,6 +154,7 @@
         let clearBtn = this.clearBtn;
         let playBtn = this.playBtn;
         let pauseBtn = this.pauseBtn;
+        let replayBtn = this.replayBtn;
 
         canvas.addEventListener("mousedown", this.pressEvent);
 
@@ -153,6 +165,8 @@
         playBtn.addEventListener("click", this.pressPlay);
 
         pauseBtn.addEventListener("click", this.pressPause);
+
+        replayBtn.addEventListener("click", this.replayLastSetup)
     }
 
     pressEvent = (e: MouseEvent | TouchEvent) => {
@@ -172,6 +186,11 @@
         else if (this.currentGen[arrX][arrY] == false) {
             this.currentGen[arrX][arrY] = true;
         }
+        for (let x = 0; x < this.width + 2; x++) {
+            for (let y = 0; y < this.height + 2; y++) {
+                this.savedGen[x][y] = this.currentGen[x][y];
+            }
+        }
         this.drawAllTrue();
     }
 
@@ -189,15 +208,32 @@
 
     pressPlay = (e: Event) => {
         this.running = true;
-        this.playBtn.style.backgroundColor = "red";
+        //this.playBtn.style.backgroundColor = "red";
         this.drawGridLines();
         this.playBtn.value = "<span class='bi-pause-fill'></span>";
+        this.playBtn.disabled = true;
     }
 
     pressPause = (e: Event) => {
         this.running = false;
-        this.playBtn.style.backgroundColor = "default";
+        //this.playBtn.style.backgroundColor = "gainsboro";
+        this.playBtn.disabled = false;
         this.drawGridLines();
+    }
+
+    replayLastSetup = (e: Event) => {
+        for (let x = 0; x < this.width + 2; x++) {
+            for (let y = 0; y < this.height + 2; y++) {
+                this.currentGen[x][y] = false;
+                this.nextGen[x][y] = false;
+            }
+        }
+        for (let x = 0; x < this.width + 2; x++) {
+            for (let y = 0; y < this.height + 2; y++) {
+                this.currentGen[x][y] = this.savedGen[x][y];
+            }
+        }
+        this.drawAllTrue();
     }
 }
 

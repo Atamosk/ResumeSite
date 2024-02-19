@@ -17,6 +17,11 @@ var GameOfLife = /** @class */ (function () {
             else if (_this.currentGen[arrX][arrY] == false) {
                 _this.currentGen[arrX][arrY] = true;
             }
+            for (var x = 0; x < _this.width + 2; x++) {
+                for (var y = 0; y < _this.height + 2; y++) {
+                    _this.savedGen[x][y] = _this.currentGen[x][y];
+                }
+            }
             _this.drawAllTrue();
         };
         this.clearGrid = function (e) {
@@ -32,27 +37,46 @@ var GameOfLife = /** @class */ (function () {
         };
         this.pressPlay = function (e) {
             _this.running = true;
-            _this.playBtn.style.backgroundColor = "red";
+            //this.playBtn.style.backgroundColor = "red";
             _this.drawGridLines();
             _this.playBtn.value = "<span class='bi-pause-fill'></span>";
+            _this.playBtn.disabled = true;
         };
         this.pressPause = function (e) {
             _this.running = false;
-            _this.playBtn.style.backgroundColor = "default";
+            //this.playBtn.style.backgroundColor = "gainsboro";
+            _this.playBtn.disabled = false;
             _this.drawGridLines();
+        };
+        this.replayLastSetup = function (e) {
+            for (var x = 0; x < _this.width + 2; x++) {
+                for (var y = 0; y < _this.height + 2; y++) {
+                    _this.currentGen[x][y] = false;
+                    _this.nextGen[x][y] = false;
+                }
+            }
+            for (var x = 0; x < _this.width + 2; x++) {
+                for (var y = 0; y < _this.height + 2; y++) {
+                    _this.currentGen[x][y] = _this.savedGen[x][y];
+                }
+            }
+            _this.drawAllTrue();
         };
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext("2d");
         var clearBtn = document.getElementById('clearBtn');
         var playBtn = document.getElementById('playBtn');
         var pauseBtn = document.getElementById('pauseBtn');
+        var replayBtn = document.getElementById('replayBtn');
         this.currentGen = [];
         this.nextGen = [];
+        this.savedGen = [];
         this.canvas = canvas;
         this.context = context;
         this.clearBtn = clearBtn;
         this.playBtn = playBtn;
         this.pauseBtn = pauseBtn;
+        this.replayBtn = replayBtn;
         this.width = width;
         this.height = height;
         this.running = false;
@@ -66,6 +90,12 @@ var GameOfLife = /** @class */ (function () {
             this.currentGen[x] = [];
             for (var y = 0; y < this.height + 2; y++) {
                 this.currentGen[x][y] = false;
+            }
+        }
+        for (var x = 0; x < this.width + 2; x++) {
+            this.savedGen[x] = [];
+            for (var y = 0; y < this.height + 2; y++) {
+                this.savedGen[x][y] = false;
             }
         }
         this.initUserInput();
@@ -165,11 +195,13 @@ var GameOfLife = /** @class */ (function () {
         var clearBtn = this.clearBtn;
         var playBtn = this.playBtn;
         var pauseBtn = this.pauseBtn;
+        var replayBtn = this.replayBtn;
         canvas.addEventListener("mousedown", this.pressEvent);
         canvas.addEventListener("touchstart", this.pressEvent);
         clearBtn.addEventListener("click", this.clearGrid);
         playBtn.addEventListener("click", this.pressPlay);
         pauseBtn.addEventListener("click", this.pressPause);
+        replayBtn.addEventListener("click", this.replayLastSetup);
     };
     return GameOfLife;
 }());
