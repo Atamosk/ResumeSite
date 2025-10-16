@@ -1,6 +1,12 @@
 var GameOfLife = /** @class */ (function () {
     function GameOfLife(height, width) {
         var _this = this;
+        this.mouseDown = function (e) {
+            _this.isMouseDown = true;
+        };
+        this.mouseUp = function (e) {
+            _this.isMouseDown = false;
+        };
         this.pressEvent = function (e) {
             var eventX = e.changedTouches ?
                 e.changedTouches[0].pageX :
@@ -11,10 +17,10 @@ var GameOfLife = /** @class */ (function () {
             //This uses the X and Y location values of the mousedown and touchstart event, and converts them to a reletive index in the array.
             var arrX = Math.floor(((eventX - (_this.canvas.offsetLeft) - 2) + 11) / 11);
             var arrY = Math.floor(((eventY - (_this.canvas.offsetTop) - 2) + 11) / 11);
-            if (_this.currentGen[arrX][arrY] == true) {
+            if (_this.currentGen[arrX][arrY] == true && _this.isMouseDown == false) {
                 _this.currentGen[arrX][arrY] = false;
             }
-            else if (_this.currentGen[arrX][arrY] == false) {
+            else if (_this.currentGen[arrX][arrY] == false && _this.isMouseDown == true) {
                 _this.currentGen[arrX][arrY] = true;
             }
             for (var x = 0; x < _this.width + 2; x++) {
@@ -37,15 +43,15 @@ var GameOfLife = /** @class */ (function () {
         };
         this.pressPlay = function (e) {
             _this.running = true;
-            //this.playBtn.style.backgroundColor = "red";
             _this.drawGridLines();
             _this.playBtn.value = "<span class='bi-pause-fill'></span>";
             _this.playBtn.disabled = true;
+            _this.pauseBtn.disabled = false;
         };
         this.pressPause = function (e) {
             _this.running = false;
-            //this.playBtn.style.backgroundColor = "gainsboro";
             _this.playBtn.disabled = false;
+            _this.pauseBtn.disabled = true;
             _this.drawGridLines();
         };
         this.replayLastSetup = function (e) {
@@ -61,6 +67,7 @@ var GameOfLife = /** @class */ (function () {
                 }
             }
             _this.drawAllTrue();
+            _this.playBtn.disabled = false;
         };
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext("2d");
@@ -77,6 +84,7 @@ var GameOfLife = /** @class */ (function () {
         this.playBtn = playBtn;
         this.pauseBtn = pauseBtn;
         this.replayBtn = replayBtn;
+        this.isMouseDown = false;
         this.width = width;
         this.height = height;
         this.running = false;
@@ -101,6 +109,7 @@ var GameOfLife = /** @class */ (function () {
         this.initUserInput();
         this.drawAllTrue();
         this.drawGridLines();
+        this.pauseBtn.disabled = true;
         //Here is the main loop setup to iterate every quarter second to be able to allow the user to see the logic.
         setInterval(function () {
             if (_this.running == true) {
@@ -111,7 +120,7 @@ var GameOfLife = /** @class */ (function () {
             }
         }, 250);
     }
-    //Here we check each cell's neighbors to determain if it lives, dies, or is born.
+    //Here we check each cell's neighbors to determine if it lives, dies, or is born.
     GameOfLife.prototype.deriveNextGen = function () {
         var neighbors = 0;
         for (var x = 1; x <= this.width; x++) {
@@ -196,7 +205,9 @@ var GameOfLife = /** @class */ (function () {
         var playBtn = this.playBtn;
         var pauseBtn = this.pauseBtn;
         var replayBtn = this.replayBtn;
-        canvas.addEventListener("mousedown", this.pressEvent);
+        canvas.addEventListener("mousedown", this.mouseDown);
+        canvas.addEventListener("mouseup", this.mouseUp);
+        canvas.addEventListener("mousemove", this.pressEvent);
         canvas.addEventListener("touchstart", this.pressEvent);
         clearBtn.addEventListener("click", this.clearGrid);
         playBtn.addEventListener("click", this.pressPlay);

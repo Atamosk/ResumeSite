@@ -9,7 +9,7 @@
     private height: number;
     private clickX: number;
     private clickY: number;
-    private clickDrag: boolean;
+    private isMouseDown: boolean;
     private clearBtn: HTMLButtonElement;
     private playBtn: HTMLButtonElement;
     private pauseBtn: HTMLButtonElement;
@@ -31,6 +31,7 @@
         this.playBtn = playBtn;
         this.pauseBtn = pauseBtn;
         this.replayBtn = replayBtn;
+        this.isMouseDown = false;
         this.width = width;
         this.height = height;
         this.running = false;
@@ -55,6 +56,7 @@
         this.initUserInput();
         this.drawAllTrue();
         this.drawGridLines();
+        this.pauseBtn.disabled = true;
 
         //Here is the main loop setup to iterate every quarter second to be able to allow the user to see the logic.
         setInterval(() => {
@@ -67,7 +69,7 @@
         }, 250);
     }
 
-    //Here we check each cell's neighbors to determain if it lives, dies, or is born.
+    //Here we check each cell's neighbors to determine if it lives, dies, or is born.
     public deriveNextGen() {
         let neighbors = 0;
         for (let x = 1; x <= this.width; x++) {
@@ -156,7 +158,10 @@
         let pauseBtn = this.pauseBtn;
         let replayBtn = this.replayBtn;
 
-        canvas.addEventListener("mousedown", this.pressEvent);
+        canvas.addEventListener("mousedown", this.mouseDown);
+        canvas.addEventListener("mouseup", this.mouseUp);
+
+        canvas.addEventListener("mousemove", this.pressEvent);
 
         canvas.addEventListener("touchstart", this.pressEvent);
         
@@ -169,6 +174,14 @@
         replayBtn.addEventListener("click", this.replayLastSetup)
     }
 
+    mouseDown = (e: MouseEvent) => {
+        this.isMouseDown = true;
+    }
+
+    mouseUp = (e: MouseEvent) => {
+        this.isMouseDown = false;
+    }
+
     pressEvent = (e: MouseEvent | TouchEvent) => {
         let eventX = (e as TouchEvent).changedTouches ?
             (e as TouchEvent).changedTouches[0].pageX :
@@ -179,11 +192,11 @@
 
         //This uses the X and Y location values of the mousedown and touchstart event, and converts them to a reletive index in the array.
         let arrX = Math.floor(((eventX - (this.canvas.offsetLeft) - 2) + 11) / 11);
-        let arrY = Math.floor(((eventY - (this.canvas.offsetTop) - 2)  + 11) / 11);
-        if (this.currentGen[arrX][arrY] == true) {
+        let arrY = Math.floor(((eventY - (this.canvas.offsetTop) - 2) + 11) / 11);
+        if (this.currentGen[arrX][arrY] == true && this.isMouseDown == false) {
             this.currentGen[arrX][arrY] = false;
         }
-        else if (this.currentGen[arrX][arrY] == false) {
+        else if (this.currentGen[arrX][arrY] == false && this.isMouseDown == true) {
             this.currentGen[arrX][arrY] = true;
         }
         for (let x = 0; x < this.width + 2; x++) {
@@ -191,7 +204,7 @@
                 this.savedGen[x][y] = this.currentGen[x][y];
             }
         }
-        this.drawAllTrue();
+            this.drawAllTrue();
     }
 
     clearGrid = (e: Event) => {
@@ -208,16 +221,16 @@
 
     pressPlay = (e: Event) => {
         this.running = true;
-        //this.playBtn.style.backgroundColor = "red";
         this.drawGridLines();
         this.playBtn.value = "<span class='bi-pause-fill'></span>";
         this.playBtn.disabled = true;
+        this.pauseBtn.disabled = false;
     }
 
     pressPause = (e: Event) => {
         this.running = false;
-        //this.playBtn.style.backgroundColor = "gainsboro";
         this.playBtn.disabled = false;
+        this.pauseBtn.disabled = true;
         this.drawGridLines();
     }
 
@@ -234,6 +247,7 @@
             }
         }
         this.drawAllTrue();
+        this.playBtn.disabled = false;
     }
 }
 
