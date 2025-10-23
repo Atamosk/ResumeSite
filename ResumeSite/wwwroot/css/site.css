@@ -18,6 +18,84 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
-  background-image: url("../lib/background.jpg")
+    font-family:gill sans;
+    margin-bottom: 60px;
+    background-image: url('../lib/Images/background.jpg');
+}
+
+header {
+    background-color: mediumaquamarine;
+}
+
+footer {
+    background-color: mediumaquamarine;
+}
+
+.welcomePage {
+    border-width: 0px;
+    border-radius: 0px 0px 50px 50px;
+    background-color: #ececec;
+    padding: 0px;
+}
+
+.golPage {
+    background-color: #ececec;
+}
+
+.cat {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 25px;
+    height: 25px;
+    visibility: hidden
+}
+
+.cat:hover{
+    visibility: visible;
+}
+
+.catHidden {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 25px;
+    height: 25px;
+}
+
+.catHidden:hover + .cat{
+    visibility: visible;
+}
+
+/*Asign class to parts of scrolling page to keep it maximized based on screen size*/
+.content-block{
+
+}
+
+.navbar-brand{
+    position:absolute;   
+}
+
+.experienceBlock{
+    background-image: url(../lib/Images/linepaper.jpg);
+    width:80%;
+    border:solid;
+    border-radius:25px;
+    padding:25px;
+}
+
+.experienceBlockTitle{
+    
+}
+
+.golBtn{
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.meIndex{
+    border:solid;
+    border-width:5px;
+    border-radius: 0px 0px 0px 50px;
 }

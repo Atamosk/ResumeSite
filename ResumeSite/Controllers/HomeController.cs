@@ -18,12 +18,17 @@ namespace ResumeSite.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult GoLPage()
+        {
+            return View();
+        }
+
+        public IActionResult VortexPage()
         {
             return View();
         }
@@ -32,6 +37,12 @@ namespace ResumeSite.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public ActionResult DisplayImage(string imageName)
+        {
+            string filePath = "~/lib/Images/" + imageName;
+            return File(filePath, "image/png");
         }
     }
 }
