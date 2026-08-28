@@ -96,5 +96,5 @@ jobs:
       uses: actions/upload-artifact@v7
       with:
         name: ResumeSiteBuild
-        path: ${{ env.Wap_Project_Directory }}\AppPackages
+        path: ResumeSite\${{ env.Wap_Project_Directory }}\AppPackages
         if-no-files-found: error
